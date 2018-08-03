@@ -3,22 +3,39 @@ import json
 import os
 import sys
 import win32com.client
+import winsound
+import decoder
+
+def beep():
+    frequency = 1200  # Set Frequency To 2500 Hertz
+    duration = 100  # Set Duration To 1000 ms == 1 second
+    winsound.Beep(frequency, duration)
 
 def listen_for_input(r, mic):
     # listen to input
     print("Now listening...")
+    beep()
+
     with mic as source:
+        #r.adjust_for_ambient_noise(source)
         audio = r.listen(source)
 
-    # print recognized audio
-    recognized_speech = r.recognize_google(audio)
-    print(recognized_speech)
+    # try to recognize audio
 
-    if (recognized_speech.lower() == "stop listening"):
-        speaker.Speak("Goodbye")
-        sys.exit(0)
-    
-    listen_for_input(r, mic)
+    try:
+        recognized_speech = r.recognize_google(audio)
+        print(recognized_speech)
+        decoder.decode(recognized_speech.lower())
+        
+        listen_for_input(r, mic)
+    except sr.RequestError:
+        # API was unreachable or unresponsive
+        print("There was an error: API unavailable")
+    except sr.UnknownValueError:
+        # speech was unintelligible
+        print("There was an error: Unable to recognize speech")
+        speaker.Speak("Sorry, I didn't get that.")
+        listen_for_input(r, mic)
 
 if __name__ == "__main__":
     # set config file
@@ -45,14 +62,14 @@ if __name__ == "__main__":
         mic_choice = int(input("Select the index of the mic: "))
 
         # build the data
-        config_data['microphone_index'] = mic_choice
+        config_data["microphone_index"] = mic_choice
 
-        # the create config file
+        # then create config file
         # and write mic choice to it
         with open(config_file, 'w') as outfile:
             json.dump(config_data, outfile)
 
     # declare mic to use
-    mic = sr.Microphone(device_index=int(config_data['microphone_index']))
+    mic = sr.Microphone(device_index=int(config_data["microphone_index"]))
 
     listen_for_input(r, mic)
