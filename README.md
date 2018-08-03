@@ -12,7 +12,7 @@ Not sure how the talking back will work on non-windows systems yet and in the pr
 - Would like to work on adding extensions - here's some ideas:
     - open virtual machines
     - add calendar events
-    - cross-reference some data (aprse then google terms and show results?)
+    - cross-reference some data (parse then google terms and show results?)
     - open email client
     - spawn a web service of some sort
     - get the owner of a domain from whois
