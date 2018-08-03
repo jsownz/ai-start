@@ -5,6 +5,7 @@ import sys
 import win32com.client
 import winsound
 import decoder
+import config
 
 def beep():
     frequency = 1200  # Set Frequency To 2500 Hertz
@@ -38,20 +39,17 @@ def listen_for_input(r, mic):
         listen_for_input(r, mic)
 
 if __name__ == "__main__":
-    # set config file
-    config_file = "./config.json"
-    config_data = {}
+    # set config data
+    config_data = config.get_config()
     # declare recognizer
     r = sr.Recognizer()
     # create speaker
     speaker = win32com.client.Dispatch("SAPI.SpVoice")
 
-    if (os.path.isfile(config_file)):
-        # load config
-        with open(config_file) as json_data:
-            config_data = json.load(json_data)
-    else:
-        # didnt find a config file, get mic selection
+    try:
+        mic_choice = config_data["microphone_index"]
+    except KeyError:
+        # didnt find a microphone index, get mic selection
         print("No config file found. Please select a microphone to use")
         print("-------------------------------------------------------")
         # loop over mic options and print them out nicely
@@ -61,15 +59,10 @@ if __name__ == "__main__":
         # get user mic choice
         mic_choice = int(input("Select the index of the mic: "))
 
-        # build the data
-        config_data["microphone_index"] = mic_choice
-
-        # then create config file
-        # and write mic choice to it
-        with open(config_file, 'w') as outfile:
-            json.dump(config_data, outfile)
+        # save microphone index
+        config.save_config("microphone_index",mic_choice)
 
     # declare mic to use
-    mic = sr.Microphone(device_index=int(config_data["microphone_index"]))
+    mic = sr.Microphone(device_index=int(mic_choice))
 
     listen_for_input(r, mic)

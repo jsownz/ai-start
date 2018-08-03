@@ -2,22 +2,14 @@ import sys
 import os
 import json
 import win32com.client
+import config
 
-# set config file
-config_file = "./config.json"
-config_data = {}
 # create speaker
 speaker = win32com.client.Dispatch("SAPI.SpVoice")
 
-if (os.path.isfile(config_file)):
-    # load config
-    with open(config_file) as json_data:
-        config_data = json.load(json_data)
-else:
-    print("Something is wrong.")
-    sys.exit(0)
-
 def decode(speech):
+    # set config data
+    config_data = config.get_config()
 
     if (speech == "stop listening"):
         speaker.Speak("Goodbye")
@@ -27,14 +19,13 @@ def decode(speech):
             name = speech.split(" me ")[1]
             response = "Okay {}".format(name)
             speaker.Speak(response)
-            # build the data
-            config_data["name"] = name
-
-            # write name to config file
-            with open(config_file, 'w') as outfile:
-                json.dump(config_data, outfile)
+            # save the data
+            config.save_config("name",name)
         elif "what's my name" in speech:
-            name = config_data["name"]
-            response = "Your name is {}".format(name)
-            speaker.Speak(response)
+            try:
+                name = config_data["name"]
+                response = "Your name is {}".format(name)
+                speaker.Speak(response)
+            except KeyError:
+                speaker.Speak("I don't know what to call you yet.")
     return
