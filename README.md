@@ -1,7 +1,14 @@
 ## Need to install a few pip packages for it to work:
+### _python3 is required_
+### _for multiple python installations (I have this on macOS), prefix these pip commands with:_
+`python3 -m`
 
 ```
 pip install SpeechRecognition
+
+# for macOS
+brew install portaudio
+
 pip install PyAudio
 ```
 

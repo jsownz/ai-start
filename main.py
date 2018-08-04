@@ -2,15 +2,16 @@ import speech_recognition as sr
 import json
 import os
 import sys
-import win32com.client
-import winsound
 import decoder
 import config
+import speaker
 
 def beep():
     frequency = 1200  # Set Frequency To 2500 Hertz
     duration = 100  # Set Duration To 1000 ms == 1 second
-    winsound.Beep(frequency, duration)
+    if sys.platform in ['Windows', 'win32', 'cygwin']:
+        import winsound
+        winsound.Beep(frequency, duration)
 
 def listen_for_input(r, mic):
     # listen to input
@@ -35,7 +36,7 @@ def listen_for_input(r, mic):
     except sr.UnknownValueError:
         # speech was unintelligible
         print("There was an error: Unable to recognize speech")
-        speaker.Speak("Sorry, I didn't get that.")
+        speaker.speak("Sorry, I didn't get that.")
         listen_for_input(r, mic)
 
 if __name__ == "__main__":
@@ -43,8 +44,6 @@ if __name__ == "__main__":
     config_data = config.get_config()
     # declare recognizer
     r = sr.Recognizer()
-    # create speaker
-    speaker = win32com.client.Dispatch("SAPI.SpVoice")
 
     try:
         mic_choice = config_data["microphone_index"]
