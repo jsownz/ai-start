@@ -12,7 +12,7 @@ brew install portaudio
 pip install PyAudio
 ```
 
-Not sure how the talking back will work on non-windows systems yet and in the process of trying differnt TTS packages, I don't know if the current code will work without a pip package or not. May need pypiwin32 or pywin32
+#### _May need pypiwin32 or pywin32 on Windows_
 
 ## Notes
 - After a few translations it's getting hung up... I'm not sure what's causing this yet. Doesn't appear to be a memory leak, but I need to dig further to see what's happening here.
