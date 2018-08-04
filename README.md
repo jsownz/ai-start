@@ -19,5 +19,7 @@ Not sure how the talking back will work on non-windows systems yet and in the pr
     - get an ip address from nslookup and copy to keyboard
     - check if site is up
     - ssh to a machine
+    - run a portscan on an ip address or domain and report relevant results
     - get the weather
+    - send this to my phone (get active window, decide what it is and how to send it [text, companion app, etc])
     - whatever else
