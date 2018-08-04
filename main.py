@@ -19,7 +19,8 @@ def listen_for_input(r, mic):
     beep()
 
     with mic as source:
-        #r.adjust_for_ambient_noise(source)
+        # this ambient noise adjustment is causing more problems than it's solving
+        # r.adjust_for_ambient_noise(source)
         audio = r.listen(source)
 
     # try to recognize audio
