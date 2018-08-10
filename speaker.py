@@ -9,7 +9,7 @@ def speak(words):
       speaker.Speak(words)
   elif sys.platform in ['Mac', 'darwin', 'os2', 'os2emx']:
     from os import system
-    system("say %s" % words)
+    system("say %r" % words)
 
   elif sys.platform in ['linux', 'linux2']:
     print("Not implemented yet")

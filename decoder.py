@@ -3,6 +3,7 @@ import os
 import json
 import config
 import speaker
+import spoken_datetime
 
 def learn_name(name):
     # build a response
@@ -36,4 +37,14 @@ def decode(speech):
                 speaker.speak(response)
             except KeyError:
                 speaker.speak("I don't know what to call you yet.")
+        elif "what time is it" in speech:
+            import time
+            timeObj = time.gmtime()
+            hour = int(time.strftime("%H"))
+            minute = time.strftime("%M")
+            spokenTime = spoken_datetime.getSpokenTime(hour,minute)
+            response = "It's {}".format(spokenTime)
+            print(response)
+            speaker.speak(response)
+
     return

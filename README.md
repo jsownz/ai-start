@@ -26,5 +26,6 @@ pip3 install PyAudio
     - ssh to a machine
     - run a portscan on an ip address or domain and report relevant results
     - get the weather
+    - get time
     - send this to my phone (get active window, decide what it is and how to send it [text, companion app, etc])
     - whatever else
